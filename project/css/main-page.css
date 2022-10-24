@@ -63,3 +63,7 @@
 .form-range{
   width: 7rem;
 }
+
+#temperatureChart{
+  width: 45rem;
+}
