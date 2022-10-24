@@ -1,0 +1,65 @@
+.lineChart{
+  display: flex;
+  align-items: center;
+}
+
+.current-weather{
+  width: 8rem;
+  height: 8rem;
+}
+
+.current-weather-wind{
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+}
+
+.current-weather-prec{
+  width: 4rem;
+  height: 4rem;
+}
+
+.current-weather-prec-mini{
+  width: 2rem;
+  height: 2rem;
+}
+
+
+.container-max-min{
+  display: flex;
+  align-items:center;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+[max-temp]{
+  color: #ef476f;
+}
+
+[min-temp]{
+  color: #118ab2;
+}
+
+.wind-direction{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #11b26c;
+}
+
+.precipitation{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #1149b2;
+}
+
+[precipitation]{
+  color: #1149b2;
+}
+
+.form-range{
+  width: 7rem;
+}
