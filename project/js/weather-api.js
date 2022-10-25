@@ -267,8 +267,12 @@ function fetchDaily(value = 1) {
                     weatherImage(code)[timeInt]
                 } alt=""></a>
                             <div class="container-max-min d-flex flex-row justify-content-between">
-                                <div class="card-text-maximum d-flex flex-row align-middle" max-temp><img class="current-weather-prec-mini" src="./images/sun-hot.png" title="Máxima"><p>${max}${tempMaxUnit}</p></div>
-                                <div class="card-text-minimum d-flex flex-row align-middle" min-temp><img class="current-weather-prec-mini" src="./images/blue-snow.png" title="Mínima"><p>${min}${tempMinUnit}</p></div>
+                                <div class="card-text-maximum d-flex flex-row align-middle" max-temp><img class="current-weather-prec-mini" src="./images/sun-hot.png" title="Máxima"><p>${max.toFixed(
+                                    1
+                                )}${tempMaxUnit}</p></div>
+                                <div class="card-text-minimum d-flex flex-row align-middle" min-temp><img class="current-weather-prec-mini" src="./images/blue-snow.png" title="Mínima"><p>${min.toFixed(
+                                    1
+                                )}${tempMinUnit}</p></div>
                             </div>
                             <div class="d-flex flex-row align-middle justify-content-center" prec-${i} precipitation><img class="current-weather-prec-mini" src="./images/waterdrops.png" title="Precipitação"><p>${prec}${precUnit}</p></div>
                         </div>
@@ -405,13 +409,13 @@ window.addEventListener("load", () => {
                 "[max-temp]"
             ).innerHTML = `<p>Máx.: ${Math.max(
                 ...out.hourly.temperature_180m
-            )}${out.hourly_units.temperature_180m}</p>`;
+            ).toFixed(1)}${out.hourly_units.temperature_180m}</p>`;
 
             document.querySelector(
                 "[min-temp]"
             ).innerHTML = `<p>Min.: ${Math.min(
                 ...out.hourly.temperature_180m
-            )}${out.hourly_units.temperature_180m}</p>`;
+            ).toFixed(1)}${out.hourly_units.temperature_180m}</p>`;
 
             document.querySelector(
                 ".wind-direction"
