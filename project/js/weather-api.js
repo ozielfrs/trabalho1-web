@@ -9,6 +9,8 @@ let semana = {
 };
 
 const now = new Date(Date.now());
+let timeInt = new Date(now).getHours() % 24;
+timeInt = timeInt > 18 || timeInt < 6 ? 2 : 1;
 
 function windDirection(value) {
     let directions = [
@@ -182,6 +184,24 @@ function weatherImage(weathercode) {
     return codigosClima[weathercode];
 }
 
+function updateCards() {
+    if (timeInt == 2) {
+        document.querySelector(
+            ".all-container"
+        ).className += ` bg-dark text-white`;
+        document.querySelectorAll("[card]").forEach((element) => {
+            element.className += ` bg-black text-white`;
+        });
+    } else {
+        document.querySelector(
+            ".all-container"
+        ).className += ` bg-white text-black`;
+        document.querySelectorAll("[card]").forEach((element) => {
+            element.className += ` bg-white text-black`;
+        });
+    }
+}
+
 function getGradient(ctx, chartArea) {
     let width, height, gradient;
     const chartWidth = chartArea.right - chartArea.left;
@@ -215,18 +235,6 @@ function fetchDaily(value = 1) {
         .then((out) => {
             document.querySelector("[next-days]").innerHTML = "";
 
-            console.log(
-                `https://api.open-meteo.com/v1/forecast?latitude=-19.73&longitude=-43.01&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=America%2FSao_Paulo&start_date=${formatDate(
-                    new Date(now).setDate(
-                        new Date(now).getDate() + 1
-                    )
-                )}&end_date=${formatDate(
-                    new Date(now).setDate(
-                        new Date(now).getDate() + value
-                    )
-                )}`
-            );
-            let x = 1;
             for (let i = 0; i < out.daily.time.length; i++) {
                 const tempMaxUnit = out.daily_units.temperature_2m_max,
                     tempMinUnit = out.daily_units.temperature_2m_min,
@@ -252,11 +260,11 @@ function fetchDaily(value = 1) {
                 document.querySelector(
                     "[next-days]"
                 ).innerHTML += `<div class="col d-flex justify-content-center mt-3">
-                    <div class="card">
+                    <div class="card" card>
                         <div class="card-body text-center">
                             <h5 class="card-title">${strTime}</h5>
                             <a image-area-${i}><img class="current-weather" src=${
-                    weatherImage(code)[x]
+                    weatherImage(code)[timeInt]
                 } alt=""></a>
                             <div class="container-max-min d-flex flex-row justify-content-between">
                                 <div class="card-text-maximum d-flex flex-row align-middle" max-temp><img class="current-weather-prec-mini" src="./images/sun-hot.png" title="Máxima"><p>${max}${tempMaxUnit}</p></div>
@@ -266,6 +274,7 @@ function fetchDaily(value = 1) {
                         </div>
                     </div>`;
             }
+            updateCards();
         })
         .catch((e) => {
             console.error(e);
@@ -290,6 +299,7 @@ latitude=-19.73&longitude=-43.01
 */
 
 window.addEventListener("load", () => {
+    updateCards();
     var ctx = document.getElementById("temperatureChart").getContext("2d");
 
     fetch(
@@ -299,15 +309,9 @@ window.addEventListener("load", () => {
     )
         .then((resp) => resp.json())
         .then((out) => {
-            console.log(
-                `https://api.open-meteo.com/v1/forecast?latitude=-19.6188&longitude=-43.227&hourly=temperature_2m&timezone=America%2FSao_Paulo&start_date=${formatDate(
-                    now
-                )}&end_date=${formatDate(now)}`
-            );
             var indexNow = out.hourly.time.findLastIndex(
                 (element) =>
-                    formatTime(Date.parse(element)) ==
-                    formatTime(now, true)
+                    formatTime(Date.parse(element)) == formatTime(now, true)
             );
             var timeNow = ``;
             var tempNow = out.hourly.temperature_180m[indexNow];
@@ -324,8 +328,7 @@ window.addEventListener("load", () => {
                                     : `${parseInt(time % 12)}`.concat(`PM`);
                         else time = time == `0` ? `12AM` : time.concat(`AM`);
                         if (
-                            formatTime(now, true) ==
-                            formatTime(Date.parse(p))
+                            formatTime(now, true) == formatTime(Date.parse(p))
                         ) {
                             timeNow = time;
                         }
@@ -371,8 +374,6 @@ window.addEventListener("load", () => {
                     ],
                 },
                 options: {
-                    /* Variar com o tamanho da tela */
-                    responsive: false,
                     plugins: {
                         /* Propriedades da Legenda */
                         legend: {
@@ -384,17 +385,13 @@ window.addEventListener("load", () => {
                             text: `Temperatura em Itabira`,
                         },
                     },
+                    maintainAspectRatio: false,
+                    responsive: true,
                 },
             };
-            console.log(tempNow, timeNow);
             new Chart(ctx, newChart);
 
-            let timeInt = new Date(Date.parse(out.hourly.time[indexNow]))
-                .getHours;
-            let image =
-                timeInt > 18 || timeInt < 6
-                    ? weatherImage(out.hourly.weathercode[indexNow])[2]
-                    : weatherImage(out.hourly.weathercode[indexNow])[1];
+            let image = weatherImage(out.hourly.weathercode[indexNow])[timeInt];
 
             document.querySelector(
                 "[image-area]"
@@ -402,17 +399,17 @@ window.addEventListener("load", () => {
 
             document.querySelector(
                 "[subtitle]"
-            ).innerHTML = `Agora são ${formatTime(Date.now(), false)}`;
+            ).innerHTML = `Agora são ${formatTime(now, false)}`;
 
             document.querySelector(
                 "[max-temp]"
-            ).innerHTML = `<p>Máxima: ${Math.max(
+            ).innerHTML = `<p>Máx.: ${Math.max(
                 ...out.hourly.temperature_180m
             )}${out.hourly_units.temperature_180m}</p>`;
 
             document.querySelector(
                 "[min-temp]"
-            ).innerHTML = `<p>Minima: ${Math.min(
+            ).innerHTML = `<p>Min.: ${Math.min(
                 ...out.hourly.temperature_180m
             )}${out.hourly_units.temperature_180m}</p>`;
 
@@ -428,23 +425,23 @@ window.addEventListener("load", () => {
             document.querySelector(
                 ".precipitation"
             ).innerHTML = `<img class="current-weather-prec" src="./images/waterdrops.png" alt=""> A precipitação agora é de ${out.hourly.precipitation[indexNow]}${out.hourly_units.precipitation}`;
-        
+
             const time = new Date(
-                Date.UTC(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate() + 1,
-                )
-            ),
-            options = { weekday: "short" };
+                    Date.UTC(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate() + 1
+                    )
+                ),
+                options = { weekday: "short" };
             const strTime =
-            semana[
-                time.toLocaleDateString("pt-BR", options).toUpperCase()
-            ] + ` ${time.getDate()}/${time.getMonth()}`;
+                semana[
+                    time.toLocaleDateString("pt-BR", options).toUpperCase()
+                ] + ` ${time.getDate()}/${time.getMonth()}`;
 
             document.querySelector(
                 "[main-title]"
-            ).innerHTML = `<h1 class="pt-5">Temperatura Hoje (${strTime})</h1>`;
+            ).innerHTML = `<h1 class="pt-5 d-flex justify-content-center align middle">Temperatura Hoje (${strTime})</h1>`;
         })
         .catch((e) => {
             console.error(e);

@@ -64,6 +64,6 @@
   width: 7rem;
 }
 
-#temperatureChart{
-  width: 45rem;
+[canvas-cont]{
+  min-height: 20rem;
 }

@@ -54,35 +54,40 @@
         </div>
     </nav>
 
-    <div class="main-title p-5 d-flex align-middle justify-content-center" main-title>
-    </div>
+    <div class="all-container">
+        <div class="main-title p-5 d-flex align-middle justify-content-center" main-title>
+        </div>
 
-    <div class="row m-4 d-flex justify-content-evenly">
-        <canvas class="m-3" id="temperatureChart"></canvas>
+        <div class="row m-4 d-flex justify-content-evenly">
+            <div class="col d-flex align-middle justify-content-center" canvas-cont><canvas class="m-3"
+                    id="temperatureChart"></canvas>
+            </div>
 
-        <div class="col sm-4">
-            <div class="card m-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Mais informações de hoje</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" subtitle></h6>
-                    <a image-area></a>
-                    <div class="container-max-min">
-                        <p class="card-text-maximum" max-temp></p>
-                        <p class="card-text-minimum" min-temp></p>
+
+            <div class="col sm-4">
+                <div class="card m-3" card>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Mais informações de hoje</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" subtitle></h6>
+                        <a image-area></a>
+                        <div class="container-max-min">
+                            <p class="card-text-maximum" max-temp></p>
+                            <p class="card-text-minimum" min-temp></p>
+                        </div>
+                        <p class="wind-direction"></p>
+                        <p class="precipitation"></p>
                     </div>
-                    <p class="wind-direction"></p>
-                    <p class="precipitation"></p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="next-days-container">
-        <h4 class="title pt-3 d-flex align-middle justify-content-center">
-            Próximos dias
-        </h4>
-        
-        <div class="row m-4 d-flex justify-content-evenly" next-days>
+        <div class="next-days-container">
+            <h4 class="title pt-3 d-flex align-middle justify-content-center">
+                Próximos dias
+            </h4>
+
+            <div class="row mx-4 pb-4 d-flex justify-content-evenly" next-days>
+            </div>
         </div>
 </body>
 
